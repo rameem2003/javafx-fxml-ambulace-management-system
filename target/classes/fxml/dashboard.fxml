@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane styleClass="root-pane" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ambulance.controller.DashboardController">
+
+    <left>
+        <VBox prefWidth="240" styleClass="sidebar">
+            <VBox alignment="CENTER" styleClass="sidebar-brand">
+                <padding><Insets bottom="20" left="15" right="15" top="20" /></padding>
+                <Label styleClass="brand-icon" text="🚑" />
+                <Label styleClass="brand-title" text="AmbulanceMS" />
+                <Label styleClass="brand-subtitle" text="Management System" />
+            </VBox>
+            <Separator />
+            <VBox spacing="5" styleClass="nav-menu">
+                <padding><Insets bottom="10" left="10" right="10" top="10" /></padding>
+                <Label styleClass="nav-header" text="MAIN MENU" />
+                <Button fx:id="btnDashboard" maxWidth="1.7976931348623157E308" onAction="#onDashboardClick" prefHeight="42" styleClass="nav-button nav-active" text="   Dashboard" />
+                <Button fx:id="btnAmbulances" maxWidth="1.7976931348623157E308" onAction="#onAmbulancesClick" prefHeight="42" styleClass="nav-button" text="   Ambulances" />
+                <Button fx:id="btnEmergencies" maxWidth="1.7976931348623157E308" onAction="#onEmergenciesClick" prefHeight="42" styleClass="nav-button" text="   Emergencies" />
+                <Button fx:id="btnDrivers" maxWidth="1.7976931348623157E308" onAction="#onDriversClick" prefHeight="42" styleClass="nav-button" text="    Drivers" />
+                <Separator />
+                <Label styleClass="nav-header" text="SYSTEM" />
+                <Button fx:id="btnReports" maxWidth="1.7976931348623157E308" onAction="#onReportsClick" prefHeight="42" styleClass="nav-button" text="   Reports" />
+                <Button fx:id="btnSettings" maxWidth="1.7976931348623157E308" onAction="#onSettingsClick" prefHeight="42" styleClass="nav-button" text="   ⚙️  Settings" />
+            </VBox>
+            <Region VBox.vgrow="ALWAYS" />
+            <VBox styleClass="sidebar-user">
+                <padding><Insets bottom="20" left="15" right="15" top="15" /></padding>
+                <Separator />
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <padding><Insets bottom="5" left="5" right="5" top="10" /></padding>
+                    <Label styleClass="user-avatar" text="👤" />
+                    <VBox>
+                        <Label styleClass="user-name" text="Admin User" />
+                        <Label styleClass="user-role" text="System Administrator" />
+                    </VBox>
+                </HBox>
+            </VBox>
+        </VBox>
+    </left>
+
+    <center>
+        <VBox styleClass="main-content">
+            <HBox alignment="CENTER_LEFT" spacing="15" styleClass="top-bar">
+                <padding><Insets bottom="15" left="25" right="25" top="15" /></padding>
+                <VBox>
+                    <Label fx:id="pageTitle" styleClass="page-title" text="Dashboard" />
+                    <Label styleClass="page-subtitle" text="Welcome back! Here's your ambulance system overview." />
+                </VBox>
+                <Region maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
+                <TextField prefHeight="36" prefWidth="220" promptText="🔍 Search..." styleClass="search-field" />
+                <Button prefHeight="36" prefWidth="36" styleClass="notification-btn" text="🔔" />
+            </HBox>
+            <Separator />
+
+            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="content-scroll" vbarPolicy="AS_NEEDED" VBox.vgrow="ALWAYS">
+                <VBox spacing="20">
+                    <padding><Insets bottom="25" left="25" right="25" top="20" /></padding>
+
+                    <HBox spacing="18" styleClass="stat-row">
+                        <HBox alignment="CENTER_LEFT" spacing="12" styleClass="stat-card stat-blue">
+                            <Label styleClass="stat-icon" text="💖" />
+                            <VBox spacing="2">
+                                <Label styleClass="stat-label" text="Total Ambulances" />
+                                <Label fx:id="totalAmbulances" styleClass="stat-value" text="24" />
+                            </VBox>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="12" styleClass="stat-card stat-green">
+                            <Label styleClass="stat-icon" text="✅" />
+                            <VBox spacing="2">
+                                <Label styleClass="stat-label" text="Available" />
+                                <Label fx:id="availableAmbulances" styleClass="stat-value" text="16" />
+                            </VBox>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="12" styleClass="stat-card stat-red">
+                            <Label styleClass="stat-icon" text="🚨" />
+                            <VBox spacing="2">
+                                <Label styleClass="stat-label" text="On Mission" />
+                                <Label fx:id="onMissionAmbulances" styleClass="stat-value" text="6" />
+                            </VBox>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="12" styleClass="stat-card stat-orange">
+                            <Label styleClass="stat-icon" text="🔧" />
+                            <VBox spacing="2">
+                                <Label styleClass="stat-label" text="Under Maintenance" />
+                                <Label fx:id="maintenanceAmbulances" styleClass="stat-value" text="2" />
+                            </VBox>
+                        </HBox>
+                    </HBox>
+
+                    <HBox spacing="18" styleClass="stat-row">
+                        <HBox alignment="CENTER_LEFT" spacing="12" styleClass="stat-card stat-purple">
+                            <Label styleClass="stat-icon" text="📋" />
+                            <VBox spacing="2">
+                                <Label styleClass="stat-label" text="Total Requests" />
+                                <Label fx:id="totalRequests" styleClass="stat-value" text="156" />
+                            </VBox>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="12" styleClass="stat-card stat-teal">
+                            <Label styleClass="stat-icon" text="⏰" />
+                            <VBox spacing="2">
+                                <Label styleClass="stat-label" text="Pending Requests" />
+                                <Label fx:id="pendingRequests" styleClass="stat-value" text="8" />
+                            </VBox>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="12" styleClass="stat-card stat-dark">
+                            <Label styleClass="stat-icon" text="👨‍⚕️" />
+                            <VBox spacing="2">
+                                <Label styleClass="stat-label" text="Active Drivers" />
+                                <Label fx:id="activeDrivers" styleClass="stat-value" text="18" />
+                            </VBox>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="12" styleClass="stat-card stat-pink">
+                            <Label styleClass="stat-icon" text="🏥" />
+                            <VBox spacing="2">
+                                <Label styleClass="stat-label" text="Hospitals Connected" />
+                                <Label fx:id="hospitalsConnected" styleClass="stat-value" text="12" />
+                            </VBox>
+                        </HBox>
+                    </HBox>
+
+                    <HBox spacing="18" styleClass="table-row">
+                        <VBox spacing="10" styleClass="card table-card">
+                            <padding><Insets bottom="15" left="15" right="15" top="15" /></padding>
+                            <Label styleClass="card-title" text="Recent Emergency Requests" />
+                            <TableView fx:id="emergencyTable" prefHeight="280" styleClass="styled-table">
+                                <columns>
+                                    <TableColumn fx:id="colRequestId" prefWidth="60" text="ID" />
+                                    <TableColumn fx:id="colRequestPatient" prefWidth="110" text="Patient" />
+                                    <TableColumn fx:id="colRequestLocation" prefWidth="120" text="Location" />
+                                    <TableColumn fx:id="colRequestPriority" prefWidth="75" text="Priority" />
+                                    <TableColumn fx:id="colRequestStatus" prefWidth="90" text="Status" />
+                                    <TableColumn fx:id="colRequestTime" prefWidth="80" text="Time" />
+                                </columns>
+                            </TableView>
+                        </VBox>
+                        <VBox spacing="10" styleClass="card table-card">
+                            <padding><Insets bottom="15" left="15" right="15" top="15" /></padding>
+                            <Label styleClass="card-title" text="Ambulance Fleet Status" />
+                            <TableView fx:id="ambulanceTable" prefHeight="280" styleClass="styled-table">
+                                <columns>
+                                    <TableColumn fx:id="colAmbId" prefWidth="60" text="ID" />
+                                    <TableColumn fx:id="colAmbPlate" prefWidth="85" text="Plate" />
+                                    <TableColumn fx:id="colAmbType" prefWidth="100" text="Type" />
+                                    <TableColumn fx:id="colAmbStatus" prefWidth="90" text="Status" />
+                                    <TableColumn fx:id="colAmbDriver" prefWidth="120" text="Driver" />
+                                    <TableColumn fx:id="colAmbLocation" prefWidth="110" text="Location" />
+                                </columns>
+                            </TableView>
+                        </VBox>
+                    </HBox>
+
+                    <VBox spacing="10" styleClass="card">
+                        <padding><Insets bottom="15" left="15" right="15" top="15" /></padding>
+                        <Label styleClass="card-title" text="Recent Activity Log" />
+                        <VBox fx:id="activityLog" spacing="6">
+                            <HBox alignment="CENTER_LEFT" spacing="10" styleClass="activity-item">
+                                <Label styleClass="activity-dot" text="🟢" />
+                                <Label styleClass="activity-time" text="12:45 PM" />
+                                <Label styleClass="activity-text" text="AMB-001 completed delivery to City Hospital" />
+                            </HBox>
+                            <HBox alignment="CENTER_LEFT" spacing="10" styleClass="activity-item">
+                                <Label styleClass="activity-dot" text="🔴" />
+                                <Label styleClass="activity-time" text="12:30 PM" />
+                                <Label styleClass="activity-text" text="Emergency call from 45 Oak Street - Priority: HIGH" />
+                            </HBox>
+                            <HBox alignment="CENTER_LEFT" spacing="10" styleClass="activity-item">
+                                <Label styleClass="activity-dot" text="🟡" />
+                                <Label styleClass="activity-time" text="12:15 PM" />
+                                <Label styleClass="activity-text" text="AMB-015 dispatched to 78 Pine Avenue" />
+                            </HBox>
+                            <HBox alignment="CENTER_LEFT" spacing="10" styleClass="activity-item">
+                                <Label styleClass="activity-dot" text="🔵" />
+                                <Label styleClass="activity-time" text="11:50 AM" />
+                                <Label styleClass="activity-text" text="Driver John Smith signed in for shift" />
+                            </HBox>
+                            <HBox alignment="CENTER_LEFT" spacing="10" styleClass="activity-item">
+                                <Label styleClass="activity-dot" text="🟠" />
+                                <Label styleClass="activity-time" text="11:30 AM" />
+                                <Label styleClass="activity-text" text="AMB-008 sent for maintenance check" />
+                            </HBox>
+                        </VBox>
+                    </VBox>
+
+                </VBox>
+            </ScrollPane>
+        </VBox>
+    </center>
+</BorderPane>

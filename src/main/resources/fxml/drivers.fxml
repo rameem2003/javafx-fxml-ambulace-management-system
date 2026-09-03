@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.ambulance.controller.DriverController"
+            styleClass="root-pane">
+
+    <left>
+        <VBox styleClass="sidebar" prefWidth="240">
+            <VBox styleClass="sidebar-brand" alignment="CENTER">
+                <padding><Insets top="20" right="15" bottom="20" left="15"/></padding>
+                <Label text="🚑" styleClass="brand-icon"/>
+                <Label text="AmbulanceMS" styleClass="brand-title"/>
+                <Label text="Management System" styleClass="brand-subtitle"/>
+            </VBox>
+            <Separator/>
+            <VBox styleClass="nav-menu" spacing="5">
+                <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+                <Label text="MAIN MENU" styleClass="nav-header"/>
+                <Button text="   📊  Dashboard" styleClass="nav-button" fx:id="btnDashboard"
+                        onAction="#onDashboardClick" maxWidth="1.7976931348623157E308" prefHeight="42"/>
+                <Button text="   🚑  Ambulances" styleClass="nav-button" fx:id="btnAmbulances"
+                        onAction="#onAmbulancesClick" maxWidth="1.7976931348623157E308" prefHeight="42"/>
+                <Button text="   🆘  Emergencies" styleClass="nav-button" fx:id="btnEmergencies"
+                        onAction="#onEmergenciesClick" maxWidth="1.7976931348623157E308" prefHeight="42"/>
+                <Button text="   👨‍⚕️  Drivers" styleClass="nav-button nav-active" fx:id="btnDrivers"
+                        onAction="#onDriversClick" maxWidth="1.7976931348623157E308" prefHeight="42"/>
+                <Separator/>
+                <Label text="SYSTEM" styleClass="nav-header"/>
+                <Button text="   📋  Reports" styleClass="nav-button" maxWidth="1.7976931348623157E308" prefHeight="42"/>
+                <Button text="   ⚙️  Settings" styleClass="nav-button" maxWidth="1.7976931348623157E308" prefHeight="42"/>
+            </VBox>
+        </VBox>
+    </left>
+
+    <center>
+        <VBox styleClass="main-content">
+            <HBox styleClass="top-bar" alignment="CENTER_LEFT" spacing="15">
+                <padding><Insets top="15" right="25" bottom="15" left="25"/></padding>
+                <VBox>
+                    <Label text="Drivers" styleClass="page-title"/>
+                    <Label text="Manage ambulance drivers and assignments" styleClass="page-subtitle"/>
+                </VBox>
+                <Region maxWidth="1.7976931348623157E308"/>
+                <TextField promptText="🔍 Search drivers..." styleClass="search-field" prefWidth="250" prefHeight="36"/>
+            </HBox>
+            <Separator/>
+
+            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" styleClass="content-scroll" VBox.vgrow="ALWAYS">
+                <VBox spacing="20">
+                    <padding><Insets top="20" right="25" bottom="25" left="25"/></padding>
+
+                    <HBox spacing="18" styleClass="stat-row">
+                        <HBox styleClass="stat-card stat-dark" spacing="12" alignment="CENTER_LEFT">
+                            <Label text="👨‍⚕️" styleClass="stat-icon"/>
+                            <VBox spacing="2">
+                                <Label text="Total Drivers" styleClass="stat-label"/>
+                                <Label text="22" styleClass="stat-value"/>
+                            </VBox>
+                        </HBox>
+                        <HBox styleClass="stat-card stat-green" spacing="12" alignment="CENTER_LEFT">
+                            <Label text="🟢" styleClass="stat-icon"/>
+                            <VBox spacing="2">
+                                <Label text="On Duty" styleClass="stat-label"/>
+                                <Label text="18" styleClass="stat-value"/>
+                            </VBox>
+                        </HBox>
+                        <HBox styleClass="stat-card stat-orange" spacing="12" alignment="CENTER_LEFT">
+                            <Label text="🟡" styleClass="stat-icon"/>
+                            <VBox spacing="2">
+                                <Label text="Off Duty" styleClass="stat-label"/>
+                                <Label text="3" styleClass="stat-value"/>
+                            </VBox>
+                        </HBox>
+                        <HBox styleClass="stat-card stat-red" spacing="12" alignment="CENTER_LEFT">
+                            <Label text="🔴" styleClass="stat-icon"/>
+                            <VBox spacing="2">
+                                <Label text="On Leave" styleClass="stat-label"/>
+                                <Label text="1" styleClass="stat-value"/>
+                            </VBox>
+                        </HBox>
+                    </HBox>
+
+                    <VBox styleClass="card" spacing="10">
+                        <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
+                        <Label text="All Drivers" styleClass="card-title"/>
+                        <TableView fx:id="driverTable" prefHeight="450" styleClass="styled-table">
+                            <columns>
+                                <TableColumn fx:id="colId" text="ID" prefWidth="70"/>
+                                <TableColumn fx:id="colName" text="Name" prefWidth="160"/>
+                                <TableColumn fx:id="colPhone" text="Phone" prefWidth="130"/>
+                                <TableColumn fx:id="colLicense" text="License No." prefWidth="120"/>
+                                <TableColumn fx:id="colStatus" text="Status" prefWidth="100"/>
+                                <TableColumn fx:id="colAmbulance" text="Assigned Ambulance" prefWidth="130"/>
+                            </columns>
+                        </TableView>
+                    </VBox>
+                </VBox>
+            </ScrollPane>
+        </VBox>
+    </center>
+</BorderPane>
