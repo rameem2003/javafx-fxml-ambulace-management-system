@@ -28,6 +28,11 @@ public class AmbulanceController {
     @FXML private TableColumn<Ambulance, String> colLocation;
     @FXML private TextField searchField;
 
+    @FXML private Label totalFleet;
+    @FXML private Label availableCount;
+    @FXML private Label onMissionCount;
+    @FXML private Label maintenanceCount;
+
     private final AmbulanceDAO ambulanceDAO = new AmbulanceDAO();
     private final ObservableList<Ambulance> ambulanceList = FXCollections.observableArrayList();
 
@@ -46,6 +51,19 @@ public class AmbulanceController {
     private void reloadData() {
         ambulanceList.setAll(ambulanceDAO.findAll());
         ambulanceTable.setItems(ambulanceList);
+        updateStats();
+    }
+
+    private void updateStats() {
+        long total = ambulanceList.size();
+        long available = ambulanceList.stream().filter(a -> "Available".equalsIgnoreCase(a.getStatus())).count();
+        long onMission = ambulanceList.stream().filter(a -> "On Mission".equalsIgnoreCase(a.getStatus())).count();
+        long maintenance = ambulanceList.stream().filter(a -> "Maintenance".equalsIgnoreCase(a.getStatus())).count();
+
+        if (totalFleet != null) totalFleet.setText(String.valueOf(total));
+        if (availableCount != null) availableCount.setText(String.valueOf(available));
+        if (onMissionCount != null) onMissionCount.setText(String.valueOf(onMission));
+        if (maintenanceCount != null) maintenanceCount.setText(String.valueOf(maintenance));
     }
 
     @FXML

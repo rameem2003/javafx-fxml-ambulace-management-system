@@ -75,28 +75,28 @@
                             <Label styleClass="stat-icon" text="💖" />
                             <VBox spacing="2">
                                 <Label styleClass="stat-label" text="Total Ambulances" />
-                                <Label fx:id="totalAmbulances" styleClass="stat-value" text="24" />
+                                <Label fx:id="totalAmbulances" styleClass="stat-value" text="0" />
                             </VBox>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" spacing="12" styleClass="stat-card stat-green">
                             <Label styleClass="stat-icon" text="✅" />
                             <VBox spacing="2">
                                 <Label styleClass="stat-label" text="Available" />
-                                <Label fx:id="availableAmbulances" styleClass="stat-value" text="16" />
+                                <Label fx:id="availableAmbulances" styleClass="stat-value" text="0" />
                             </VBox>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" spacing="12" styleClass="stat-card stat-red">
                             <Label styleClass="stat-icon" text="🚨" />
                             <VBox spacing="2">
                                 <Label styleClass="stat-label" text="On Mission" />
-                                <Label fx:id="onMissionAmbulances" styleClass="stat-value" text="6" />
+                                <Label fx:id="onMissionAmbulances" styleClass="stat-value" text="0" />
                             </VBox>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" spacing="12" styleClass="stat-card stat-orange">
                             <Label styleClass="stat-icon" text="🔧" />
                             <VBox spacing="2">
                                 <Label styleClass="stat-label" text="Under Maintenance" />
-                                <Label fx:id="maintenanceAmbulances" styleClass="stat-value" text="2" />
+                                <Label fx:id="maintenanceAmbulances" styleClass="stat-value" text="0" />
                             </VBox>
                         </HBox>
                     </HBox>
@@ -106,28 +106,21 @@
                             <Label styleClass="stat-icon" text="📋" />
                             <VBox spacing="2">
                                 <Label styleClass="stat-label" text="Total Requests" />
-                                <Label fx:id="totalRequests" styleClass="stat-value" text="156" />
+                                <Label fx:id="totalRequests" styleClass="stat-value" text="0" />
                             </VBox>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" spacing="12" styleClass="stat-card stat-teal">
                             <Label styleClass="stat-icon" text="⏰" />
                             <VBox spacing="2">
                                 <Label styleClass="stat-label" text="Pending Requests" />
-                                <Label fx:id="pendingRequests" styleClass="stat-value" text="8" />
+                                <Label fx:id="pendingRequests" styleClass="stat-value" text="0" />
                             </VBox>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" spacing="12" styleClass="stat-card stat-dark">
                             <Label styleClass="stat-icon" text="👨‍⚕️" />
                             <VBox spacing="2">
                                 <Label styleClass="stat-label" text="Active Drivers" />
-                                <Label fx:id="activeDrivers" styleClass="stat-value" text="18" />
-                            </VBox>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" spacing="12" styleClass="stat-card stat-pink">
-                            <Label styleClass="stat-icon" text="🏥" />
-                            <VBox spacing="2">
-                                <Label styleClass="stat-label" text="Hospitals Connected" />
-                                <Label fx:id="hospitalsConnected" styleClass="stat-value" text="12" />
+                                <Label fx:id="activeDrivers" styleClass="stat-value" text="0" />
                             </VBox>
                         </HBox>
                     </HBox>

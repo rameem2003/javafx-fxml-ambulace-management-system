@@ -29,6 +29,11 @@ public class EmergencyController {
     @FXML private TableColumn<EmergencyRequest, String> colAmbulance;
     @FXML private TextField searchField;
 
+    @FXML private Label totalRequests;
+    @FXML private Label criticalCount;
+    @FXML private Label pendingCount;
+    @FXML private Label completedCount;
+
     private final EmergencyRequestDAO emergencyDAO = new EmergencyRequestDAO();
     private final ObservableList<EmergencyRequest> requestList = FXCollections.observableArrayList();
 
@@ -48,6 +53,19 @@ public class EmergencyController {
     private void reloadData() {
         requestList.setAll(emergencyDAO.findAll());
         emergencyTable.setItems(requestList);
+        updateStats();
+    }
+
+    private void updateStats() {
+        long total = requestList.size();
+        long critical = requestList.stream().filter(r -> "CRITICAL".equalsIgnoreCase(r.getPriority())).count();
+        long pending = requestList.stream().filter(r -> "Pending".equalsIgnoreCase(r.getStatus())).count();
+        long completed = requestList.stream().filter(r -> "Completed".equalsIgnoreCase(r.getStatus())).count();
+
+        if (totalRequests != null) totalRequests.setText(String.valueOf(total));
+        if (criticalCount != null) criticalCount.setText(String.valueOf(critical));
+        if (pendingCount != null) pendingCount.setText(String.valueOf(pending));
+        if (completedCount != null) completedCount.setText(String.valueOf(completed));
     }
 
     @FXML

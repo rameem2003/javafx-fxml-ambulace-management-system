@@ -44,7 +44,6 @@ public class DashboardController {
     @FXML private Label totalRequests;
     @FXML private Label pendingRequests;
     @FXML private Label activeDrivers;
-    @FXML private Label hospitalsConnected;
     @FXML private Label pageTitle;
 
     private final AmbulanceDAO ambulanceDAO = new AmbulanceDAO();
@@ -113,7 +112,6 @@ public class DashboardController {
         if (totalRequests != null) totalRequests.setText(String.valueOf(totalReq));
         if (pendingRequests != null) pendingRequests.setText(String.valueOf(pending));
         if (activeDrivers != null) activeDrivers.setText(String.valueOf(activeDrv));
-        if (hospitalsConnected != null) hospitalsConnected.setText("12");
     }
 
     private void navigateTo(String fxmlFile, String title) {

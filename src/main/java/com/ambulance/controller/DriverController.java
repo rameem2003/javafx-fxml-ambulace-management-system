@@ -28,6 +28,11 @@ public class DriverController {
     @FXML private TableColumn<Driver, String> colAmbulance;
     @FXML private TextField searchField;
 
+    @FXML private Label totalDrivers;
+    @FXML private Label onDutyCount;
+    @FXML private Label offDutyCount;
+    @FXML private Label onLeaveCount;
+
     private final DriverDAO driverDAO = new DriverDAO();
     private final ObservableList<Driver> driverList = FXCollections.observableArrayList();
 
@@ -46,6 +51,19 @@ public class DriverController {
     private void reloadData() {
         driverList.setAll(driverDAO.findAll());
         driverTable.setItems(driverList);
+        updateStats();
+    }
+
+    private void updateStats() {
+        long total = driverList.size();
+        long onDuty = driverList.stream().filter(d -> "On Duty".equalsIgnoreCase(d.getStatus())).count();
+        long offDuty = driverList.stream().filter(d -> "Off Duty".equalsIgnoreCase(d.getStatus())).count();
+        long onLeave = driverList.stream().filter(d -> "On Leave".equalsIgnoreCase(d.getStatus())).count();
+
+        if (totalDrivers != null) totalDrivers.setText(String.valueOf(total));
+        if (onDutyCount != null) onDutyCount.setText(String.valueOf(onDuty));
+        if (offDutyCount != null) offDutyCount.setText(String.valueOf(offDuty));
+        if (onLeaveCount != null) onLeaveCount.setText(String.valueOf(onLeave));
     }
 
     @FXML

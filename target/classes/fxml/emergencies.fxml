@@ -59,28 +59,28 @@
                             <Label text="📋" styleClass="stat-icon"/>
                             <VBox spacing="2">
                                 <Label text="Total Requests" styleClass="stat-label"/>
-                                <Label text="156" styleClass="stat-value"/>
+                                <Label fx:id="totalRequests" text="0" styleClass="stat-value"/>
                             </VBox>
                         </HBox>
                         <HBox styleClass="stat-card stat-red" spacing="12" alignment="CENTER_LEFT">
                             <Label text="🔴" styleClass="stat-icon"/>
                             <VBox spacing="2">
                                 <Label text="Critical" styleClass="stat-label"/>
-                                <Label text="12" styleClass="stat-value"/>
+                                <Label fx:id="criticalCount" text="0" styleClass="stat-value"/>
                             </VBox>
                         </HBox>
                         <HBox styleClass="stat-card stat-orange" spacing="12" alignment="CENTER_LEFT">
                             <Label text="🟡" styleClass="stat-icon"/>
                             <VBox spacing="2">
                                 <Label text="Pending" styleClass="stat-label"/>
-                                <Label text="8" styleClass="stat-value"/>
+                                <Label fx:id="pendingCount" text="0" styleClass="stat-value"/>
                             </VBox>
                         </HBox>
                         <HBox styleClass="stat-card stat-green" spacing="12" alignment="CENTER_LEFT">
                             <Label text="🟢" styleClass="stat-icon"/>
                             <VBox spacing="2">
                                 <Label text="Completed" styleClass="stat-label"/>
-                                <Label text="136" styleClass="stat-value"/>
+                                <Label fx:id="completedCount" text="0" styleClass="stat-value"/>
                             </VBox>
                         </HBox>
                     </HBox>

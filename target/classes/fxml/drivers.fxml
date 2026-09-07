@@ -59,28 +59,28 @@
                             <Label text="👨‍⚕️" styleClass="stat-icon"/>
                             <VBox spacing="2">
                                 <Label text="Total Drivers" styleClass="stat-label"/>
-                                <Label text="22" styleClass="stat-value"/>
+                                <Label fx:id="totalDrivers" text="0" styleClass="stat-value"/>
                             </VBox>
                         </HBox>
                         <HBox styleClass="stat-card stat-green" spacing="12" alignment="CENTER_LEFT">
                             <Label text="🟢" styleClass="stat-icon"/>
                             <VBox spacing="2">
                                 <Label text="On Duty" styleClass="stat-label"/>
-                                <Label text="18" styleClass="stat-value"/>
+                                <Label fx:id="onDutyCount" text="0" styleClass="stat-value"/>
                             </VBox>
                         </HBox>
                         <HBox styleClass="stat-card stat-orange" spacing="12" alignment="CENTER_LEFT">
                             <Label text="🟡" styleClass="stat-icon"/>
                             <VBox spacing="2">
                                 <Label text="Off Duty" styleClass="stat-label"/>
-                                <Label text="3" styleClass="stat-value"/>
+                                <Label fx:id="offDutyCount" text="0" styleClass="stat-value"/>
                             </VBox>
                         </HBox>
                         <HBox styleClass="stat-card stat-red" spacing="12" alignment="CENTER_LEFT">
                             <Label text="🔴" styleClass="stat-icon"/>
                             <VBox spacing="2">
                                 <Label text="On Leave" styleClass="stat-label"/>
-                                <Label text="1" styleClass="stat-value"/>
+                                <Label fx:id="onLeaveCount" text="0" styleClass="stat-value"/>
                             </VBox>
                         </HBox>
                     </HBox>
