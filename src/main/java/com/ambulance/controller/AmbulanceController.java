@@ -1,7 +1,6 @@
 package com.ambulance.controller;
 
-import java.io.IOException;
-
+import com.ambulance.dao.AmbulanceDAO;
 import com.ambulance.model.Ambulance;
 
 import javafx.collections.FXCollections;
@@ -10,28 +9,27 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.util.Optional;
 
 public class AmbulanceController {
 
-    @FXML
-    private TableView<Ambulance> ambulanceTable;
+    @FXML private TableView<Ambulance> ambulanceTable;
+    @FXML private TableColumn<Ambulance, String> colId;
+    @FXML private TableColumn<Ambulance, String> colPlate;
+    @FXML private TableColumn<Ambulance, String> colType;
+    @FXML private TableColumn<Ambulance, String> colStatus;
+    @FXML private TableColumn<Ambulance, String> colDriver;
+    @FXML private TableColumn<Ambulance, String> colLocation;
+    @FXML private TextField searchField;
 
-    @FXML
-    private TableColumn<Ambulance, String> colId;
-    @FXML
-    private TableColumn<Ambulance, String> colPlate;
-    @FXML
-    private TableColumn<Ambulance, String> colType;
-    @FXML
-    private TableColumn<Ambulance, String> colStatus;
-    @FXML
-    private TableColumn<Ambulance, String> colDriver;
-    @FXML
-    private TableColumn<Ambulance, String> colLocation;
+    private final AmbulanceDAO ambulanceDAO = new AmbulanceDAO();
+    private final ObservableList<Ambulance> ambulanceList = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
@@ -42,41 +40,206 @@ public class AmbulanceController {
         colDriver.setCellValueFactory(new PropertyValueFactory<>("driverName"));
         colLocation.setCellValueFactory(new PropertyValueFactory<>("location"));
 
-        ObservableList<Ambulance> ambulances = FXCollections.observableArrayList(
-                new Ambulance("AMB-001", "ABC-1234", "Basic Life Support", "Available", "Central Station",
-                        "John Smith"),
-                new Ambulance("AMB-002", "ABC-5678", "Advanced Life Support", "On Mission", "Downtown", "Mike Johnson"),
-                new Ambulance("AMB-003", "ABC-9012", "Basic Life Support", "Available", "North Hub", "Sarah Williams"),
-                new Ambulance("AMB-004", "ABC-3456", "Patient Transport", "On Mission", "East District", "David Brown"),
-                new Ambulance("AMB-005", "ABC-7890", "Advanced Life Support", "Available", "South Station",
-                        "Emily Davis"),
-                new Ambulance("AMB-006", "DEF-1234", "Basic Life Support", "Maintenance", "Central Station",
-                        "Robert Wilson"),
-                new Ambulance("AMB-007", "DEF-5678", "ICU Ambulance", "On Mission", "West Side", "Lisa Anderson"),
-                new Ambulance("AMB-008", "DEF-9012", "Basic Life Support", "Maintenance", "North Hub", "James Taylor"),
-                new Ambulance("AMB-009", "DEF-3456", "Advanced Life Support", "Available", "Downtown", "Maria Garcia"),
-                new Ambulance("AMB-010", "DEF-7890", "Patient Transport", "On Mission", "Central Station",
-                        "Chris Martinez"),
-                new Ambulance("AMB-011", "GHI-1234", "ICU Ambulance", "Available", "South Station", "Anna White"),
-                new Ambulance("AMB-012", "GHI-5678", "Basic Life Support", "On Mission", "North Hub", "Tom Harris"),
-                new Ambulance("AMB-013", "GHI-9012", "Advanced Life Support", "Available", "East District",
-                        "Nancy Clark"),
-                new Ambulance("AMB-014", "GHI-3456", "Patient Transport", "On Mission", "West Side", "Kevin Lewis"),
-                new Ambulance("AMB-015", "GHI-7890", "Basic Life Support", "Available", "Central Station",
-                        "Laura Young"),
-                new Ambulance("AMB-016", "JKL-1234", "ICU Ambulance", "On Mission", "Downtown", "Steve King"),
-                new Ambulance("AMB-017", "JKL-5678", "Advanced Life Support", "Available", "South Station",
-                        "Amy Scott"),
-                new Ambulance("AMB-018", "JKL-9012", "Basic Life Support", "Available", "North Hub", "Brian Adams"),
-                new Ambulance("AMB-019", "JKL-3456", "Patient Transport", "On Mission", "East District", "Diana Green"),
-                new Ambulance("AMB-020", "JKL-7890", "ICU Ambulance", "Available", "West Side", "Eric Hall"),
-                new Ambulance("AMB-021", "MNO-1234", "Basic Life Support", "On Mission", "Central Station",
-                        "Fiona Allen"),
-                new Ambulance("AMB-022", "MNO-5678", "Advanced Life Support", "Available", "Downtown", "George Wright"),
-                new Ambulance("AMB-023", "MNO-9012", "Basic Life Support", "Maintenance", "South Station",
-                        "Helen Martin"),
-                new Ambulance("AMB-024", "MNO-3456", "Patient Transport", "Available", "North Hub", "Ivan Robinson"));
-        ambulanceTable.setItems(ambulances);
+        reloadData();
+    }
+
+    private void reloadData() {
+        ambulanceList.setAll(ambulanceDAO.findAll());
+        ambulanceTable.setItems(ambulanceList);
+    }
+
+    @FXML
+    private void onAddClick() {
+        Dialog<Ambulance> dialog = new Dialog<>();
+        dialog.setTitle("Add Ambulance");
+        dialog.setHeaderText("Enter new ambulance details");
+
+        ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
+
+        TextField idField = new TextField();
+        idField.setPromptText("AMB-025");
+        TextField plateField = new TextField();
+        plateField.setPromptText("ABC-1234");
+        TextField typeField = new TextField();
+        typeField.setPromptText("Basic Life Support");
+        TextField statusField = new TextField();
+        statusField.setPromptText("Available");
+        TextField locationField = new TextField();
+        locationField.setPromptText("Central Station");
+        TextField driverField = new TextField();
+        driverField.setPromptText("John Smith");
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.add(new Label("ID:"), 0, 0);
+        grid.add(idField, 1, 0);
+        grid.add(new Label("Plate Number:"), 0, 1);
+        grid.add(plateField, 1, 1);
+        grid.add(new Label("Type:"), 0, 2);
+        grid.add(typeField, 1, 2);
+        grid.add(new Label("Status:"), 0, 3);
+        grid.add(statusField, 1, 3);
+        grid.add(new Label("Location:"), 0, 4);
+        grid.add(locationField, 1, 4);
+        grid.add(new Label("Driver:"), 0, 5);
+        grid.add(driverField, 1, 5);
+
+        dialog.getDialogPane().setContent(grid);
+
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == saveButtonType) {
+                return new Ambulance(
+                        idField.getText().trim(),
+                        plateField.getText().trim(),
+                        typeField.getText().trim(),
+                        statusField.getText().trim(),
+                        locationField.getText().trim(),
+                        driverField.getText().trim());
+            }
+            return null;
+        });
+
+        Optional<Ambulance> result = dialog.showAndWait();
+        result.ifPresent(ambulance -> {
+            try {
+                ambulanceDAO.insert(ambulance);
+                reloadData();
+            } catch (RuntimeException e) {
+                showError("Failed to add ambulance: " + e.getMessage());
+            }
+        });
+    }
+
+    @FXML
+    private void onEditClick() {
+        Ambulance selected = ambulanceTable.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            showInfo("Please select an ambulance to edit.");
+            return;
+        }
+
+        Dialog<Ambulance> dialog = new Dialog<>();
+        dialog.setTitle("Edit Ambulance");
+        dialog.setHeaderText("Edit ambulance: " + selected.getId());
+
+        ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
+
+        TextField idField = new TextField(selected.getId());
+        TextField plateField = new TextField(selected.getPlateNumber());
+        TextField typeField = new TextField(selected.getType());
+        TextField statusField = new TextField(selected.getStatus());
+        TextField locationField = new TextField(selected.getLocation());
+        TextField driverField = new TextField(selected.getDriverName());
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.add(new Label("ID:"), 0, 0);
+        grid.add(idField, 1, 0);
+        grid.add(new Label("Plate Number:"), 0, 1);
+        grid.add(plateField, 1, 1);
+        grid.add(new Label("Type:"), 0, 2);
+        grid.add(typeField, 1, 2);
+        grid.add(new Label("Status:"), 0, 3);
+        grid.add(statusField, 1, 3);
+        grid.add(new Label("Location:"), 0, 4);
+        grid.add(locationField, 1, 4);
+        grid.add(new Label("Driver:"), 0, 5);
+        grid.add(driverField, 1, 5);
+
+        dialog.getDialogPane().setContent(grid);
+
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == saveButtonType) {
+                return new Ambulance(
+                        idField.getText().trim(),
+                        plateField.getText().trim(),
+                        typeField.getText().trim(),
+                        statusField.getText().trim(),
+                        locationField.getText().trim(),
+                        driverField.getText().trim());
+            }
+            return null;
+        });
+
+        Optional<Ambulance> result = dialog.showAndWait();
+        result.ifPresent(updated -> {
+            try {
+                ambulanceDAO.update(updated);
+                reloadData();
+            } catch (RuntimeException e) {
+                showError("Failed to update ambulance: " + e.getMessage());
+            }
+        });
+    }
+
+    @FXML
+    private void onDeleteClick() {
+        Ambulance selected = ambulanceTable.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            showInfo("Please select an ambulance to delete.");
+            return;
+        }
+
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Delete Ambulance");
+        confirm.setHeaderText("Delete ambulance: " + selected.getId());
+        confirm.setContentText("Are you sure you want to delete this ambulance? This action cannot be undone.");
+
+        Optional<ButtonType> result = confirm.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                ambulanceDAO.delete(selected.getId());
+                reloadData();
+            } catch (RuntimeException e) {
+                showError("Failed to delete ambulance: " + e.getMessage());
+            }
+        }
+    }
+
+    @FXML
+    private void onRefreshClick() {
+        reloadData();
+    }
+
+    @FXML
+    private void onSearch() {
+        String query = searchField == null ? "" : searchField.getText().toLowerCase().trim();
+        if (query.isEmpty()) {
+            ambulanceTable.setItems(ambulanceList);
+            return;
+        }
+        ObservableList<Ambulance> filtered = FXCollections.observableArrayList();
+        for (Ambulance a : ambulanceList) {
+            if (a.getId().toLowerCase().contains(query)
+                    || a.getPlateNumber().toLowerCase().contains(query)
+                    || a.getType().toLowerCase().contains(query)
+                    || a.getStatus().toLowerCase().contains(query)
+                    || a.getLocation().toLowerCase().contains(query)
+                    || a.getDriverName().toLowerCase().contains(query)) {
+                filtered.add(a);
+            }
+        }
+        ambulanceTable.setItems(filtered);
+    }
+
+    private void showError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void showInfo(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     private void navigateTo(String fxmlFile, String title) {
@@ -93,23 +256,8 @@ public class AmbulanceController {
         }
     }
 
-    @FXML
-    private void onDashboardClick() {
-        navigateTo("dashboard.fxml", "Dashboard - Ambulance Management System");
-    }
-
-    @FXML
-    private void onAmbulancesClick() {
-        navigateTo("ambulances.fxml", "Ambulances - Ambulance Management System");
-    }
-
-    @FXML
-    private void onEmergenciesClick() {
-        navigateTo("emergencies.fxml", "Emergencies - Ambulance Management System");
-    }
-
-    @FXML
-    private void onDriversClick() {
-        navigateTo("drivers.fxml", "Drivers - Ambulance Management System");
-    }
+    @FXML private void onDashboardClick() { navigateTo("dashboard.fxml", "Dashboard - Ambulance Management System"); }
+    @FXML private void onAmbulancesClick() { navigateTo("ambulances.fxml", "Ambulances - Ambulance Management System"); }
+    @FXML private void onEmergenciesClick() { navigateTo("emergencies.fxml", "Emergencies - Ambulance Management System"); }
+    @FXML private void onDriversClick() { navigateTo("drivers.fxml", "Drivers - Ambulance Management System"); }
 }

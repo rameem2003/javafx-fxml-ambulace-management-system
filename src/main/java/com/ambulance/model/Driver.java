@@ -34,6 +34,10 @@ public class Driver {
     public String getStatus() { return status.get(); }
     public String getAssignedAmbulance() { return assignedAmbulance.get(); }
 
+    public void setId(String id) { this.id.set(id); }
+    public void setName(String name) { this.name.set(name); }
+    public void setPhone(String phone) { this.phone.set(phone); }
+    public void setLicenseNo(String licenseNo) { this.licenseNo.set(licenseNo); }
     public void setStatus(String status) { this.status.set(status); }
     public void setAssignedAmbulance(String amb) { this.assignedAmbulance.set(amb); }
 }

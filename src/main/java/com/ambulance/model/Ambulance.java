@@ -34,6 +34,9 @@ public class Ambulance {
     public String getLocation() { return location.get(); }
     public String getDriverName() { return driverName.get(); }
 
+    public void setId(String id) { this.id.set(id); }
+    public void setPlateNumber(String plateNumber) { this.plateNumber.set(plateNumber); }
+    public void setType(String type) { this.type.set(type); }
     public void setStatus(String status) { this.status.set(status); }
     public void setLocation(String location) { this.location.set(location); }
     public void setDriverName(String driverName) { this.driverName.set(driverName); }

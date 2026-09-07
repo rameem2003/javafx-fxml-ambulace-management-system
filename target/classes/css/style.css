@@ -361,3 +361,60 @@
 .content-scroll .scroll-bar:vertical .track {
   -fx-background-color: transparent;
 }
+
+/* ---- CRUD BUTTONS ---- */
+.btn-add {
+  -fx-background-color: #22c55e;
+  -fx-text-fill: white;
+  -fx-font-size: 13px;
+  -fx-font-weight: bold;
+  -fx-padding: 8 16 8 16;
+  -fx-background-radius: 6;
+  -fx-cursor: hand;
+}
+
+.btn-add:hover {
+  -fx-background-color: #16a34a;
+}
+
+.btn-edit {
+  -fx-background-color: #3b82f6;
+  -fx-text-fill: white;
+  -fx-font-size: 13px;
+  -fx-font-weight: bold;
+  -fx-padding: 8 16 8 16;
+  -fx-background-radius: 6;
+  -fx-cursor: hand;
+}
+
+.btn-edit:hover {
+  -fx-background-color: #2563eb;
+}
+
+.btn-delete {
+  -fx-background-color: #ef4444;
+  -fx-text-fill: white;
+  -fx-font-size: 13px;
+  -fx-font-weight: bold;
+  -fx-padding: 8 16 8 16;
+  -fx-background-radius: 6;
+  -fx-cursor: hand;
+}
+
+.btn-delete:hover {
+  -fx-background-color: #dc2626;
+}
+
+.btn-refresh {
+  -fx-background-color: #64748b;
+  -fx-text-fill: white;
+  -fx-font-size: 13px;
+  -fx-font-weight: bold;
+  -fx-padding: 8 16 8 16;
+  -fx-background-radius: 6;
+  -fx-cursor: hand;
+}
+
+.btn-refresh:hover {
+  -fx-background-color: #475569;
+}

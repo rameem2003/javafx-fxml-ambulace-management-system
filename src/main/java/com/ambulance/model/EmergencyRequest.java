@@ -38,6 +38,11 @@ public class EmergencyRequest {
     public String getTime() { return time.get(); }
     public String getAssignedAmbulance() { return assignedAmbulance.get(); }
 
+    public void setId(String id) { this.id.set(id); }
+    public void setPatientName(String patientName) { this.patientName.set(patientName); }
+    public void setLocation(String location) { this.location.set(location); }
     public void setStatus(String status) { this.status.set(status); }
+    public void setPriority(String priority) { this.priority.set(priority); }
+    public void setTime(String time) { this.time.set(time); }
     public void setAssignedAmbulance(String amb) { this.assignedAmbulance.set(amb); }
 }

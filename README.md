@@ -1,13 +1,14 @@
 # Ambulance Management System
 
-A JavaFX-based dashboard application for managing ambulance operations. Built with Maven, FXML layouts, and static data (no database required).
+A JavaFX-based dashboard application for managing ambulance operations. Built with Maven, FXML layouts, and PostgreSQL for persistent data storage.
 
 ## Features
 
 - **Dashboard** — Overview with stat cards, ambulance fleet table, emergency requests table, and activity log
-- **Ambulances** — Full fleet listing with ID, plate number, type, status, driver, and location
-- **Emergencies** — Emergency request tracking with patient info, priority levels, status, and ambulance assignments
-- **Drivers** — Driver management with contact info, license numbers, duty status, and ambulance assignments
+- **Ambulances** — Full fleet listing with full CRUD (Create, Read, Update, Delete) operations
+- **Emergencies** — Emergency request tracking with full CRUD operations
+- **Drivers** — Driver management with full CRUD operations
+- **Search** — Real-time filtering of data in every management view
 - **Navigation** — Sidebar navigation between all views
 
 ## Tech Stack
@@ -17,22 +18,38 @@ A JavaFX-based dashboard application for managing ambulance operations. Built wi
 - FXML (layout)
 - Maven (build)
 - CSS (styling)
+- PostgreSQL (persistence)
 
 ## Prerequisites
 
 1. **Java 17** or later — [Download JDK](https://adoptium.net/)
 2. **Maven 3.8+** — [Download Maven](https://maven.apache.org/download.cgi)
+3. **PostgreSQL** — [Download PostgreSQL](https://www.postgresql.org/download/)
 
-Verify installations:
+## Database Setup
 
-```bash
-java -version
-mvn -version
+1. Install PostgreSQL and start the service.
+2. Create the database:
+   ```sql
+   CREATE DATABASE ambulance_db;
+   ```
+3. The application will automatically create the required tables (`ambulances`, `drivers`, `emergency_requests`) on startup.
+
+### Database Configuration
+
+Edit `src/main/resources/application.properties` to match your PostgreSQL setup:
+
+```properties
+db.host=localhost
+db.port=5432
+db.name=ambulance_db
+db.user=postgres
+db.password=postgres
 ```
 
 ## How to Run
 
-### Option 1: Using Maven (Recommended)
+### Using Maven (Recommended)
 
 ```bash
 # 1. Clone or download the project
@@ -45,13 +62,7 @@ mvn clean compile
 mvn javafx:run
 ```
 
-### Option 2: Using Maven Exec Plugin
-
-```bash
-mvn clean compile exec:java -Dexec.mainClass="com.ambulance.App"
-```
-
-### Option 3: Build JAR and Run
+### Build JAR and Run
 
 ```bash
 # Build the JAR
@@ -61,20 +72,11 @@ mvn clean package
 java --module-path "C:/path-to-javafx/lib" --add-modules javafx.controls,javafx.fxml -jar target/ambulance-management-system-1.0-SNAPSHOT.jar
 ```
 
-> **Note:** For Option 3, you need to download JavaFX SDK from https://openjfx.io and point `--module-path` to the `lib` folder.
-
-### Option 4: Run from IntelliJ IDEA
+### Run from IntelliJ IDEA
 
 1. Open the project folder in IntelliJ IDEA
 2. IntelliJ should auto-detect the Maven project and import it
-3. Right-click `App.java` → Run `App.main()`
-4. Or use the Maven tool window → Plugins → javafx → javafx:run
-
-### Option 5: Run from VS Code
-
-1. Install the "Extension Pack for Java" and "JavaFX Support" extensions
-2. Open the project folder
-3. Open `App.java` and click Run
+3. Right-click `App.java` → Run `App.main()` Or use the Maven tool window → Plugins → javafx → javafx:run
 
 ## Project Structure
 
@@ -88,6 +90,12 @@ ambulance-management-system/
         │   └── com/
         │       └── ambulance/
         │           ├── App.java                  (Main entry point)
+        │           ├── db/
+        │           │   └── Database.java         (Connection manager + schema init)
+        │           ├── dao/
+        │           │   ├── AmbulanceDAO.java     (CRUD for ambulances)
+        │           │   ├── DriverDAO.java        (CRUD for drivers)
+        │           │   └── EmergencyRequestDAO.java (CRUD for emergency requests)
         │           ├── controller/
         │           │   ├── DashboardController.java
         │           │   ├── AmbulanceController.java
@@ -100,33 +108,36 @@ ambulance-management-system/
         └── resources/
             ├── css/
             │   └── style.css
-            └── fxml/
-                ├── dashboard.fxml
-                ├── ambulances.fxml
-                ├── emergencies.fxml
-                └── drivers.fxml
+            ├── fxml/
+            │   ├── dashboard.fxml
+            │   ├── ambulances.fxml
+            │   ├── emergencies.fxml
+            │   └── drivers.fxml
+            └── application.properties            (DB connection config)
 ```
+
+## CRUD Operations
+
+Each management view (Ambulances, Drivers, Emergencies) provides:
+
+- **Add** (+): Opens a dialog to create a new record
+- **Edit** (✏️): Opens a dialog pre-filled with the selected record's data
+- **Delete** (🗑): Removes the selected record after confirmation
+- **Refresh** (🔄): Reloads data from the database
+- **Search**: Real-time filtering of the table
 
 ## Troubleshooting
 
+### "Failed to initialize database schema"
+- Ensure PostgreSQL is running (`pg_ctl status` or check the Windows service)
+- Verify credentials in `application.properties`
+- Ensure the `ambulance_db` database exists
+
 ### "UnsupportedClassVersionError"
 You are using a JDK older than 17. Install Java 17+.
-
-### " javafx.fxml.LoadException: Location is not set"
-Make sure you run with Maven (`mvn javafx:run`) so resources are on the classpath.
-
-### Maven can't find javafx
-JavaFX is not bundled with JDK 17+. The `pom.xml` already includes JavaFX dependencies — just run `mvn clean compile` first.
 
 ### Windows: Module path errors when running JAR directly
 Download the [JavaFX SDK](https://openjfx.io), extract it, and use:
 ```bash
 java --module-path "C:\path\to\javafx-sdk-17\lib" --add-modules javafx.controls,javafx.fxml -jar target\ambulance-management-system-1.0-SNAPSHOT.jar
 ```
-
-## Notes
-
-- All data is **static** — hardcoded in controller `initialize()` methods for demonstration
-- No database is required
-- The UI updates at runtime but changes are not persisted
-- Navigation works by loading different FXML files into a new Scene

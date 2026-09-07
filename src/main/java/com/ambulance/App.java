@@ -1,5 +1,6 @@
 package com.ambulance;
 
+import com.ambulance.db.Database;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,6 +14,8 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        Database.initialize();
+
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/dashboard.fxml"));
         Parent root = fxmlLoader.load();
         scene = new Scene(root, 1200, 750);

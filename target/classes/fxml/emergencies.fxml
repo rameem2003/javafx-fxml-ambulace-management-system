@@ -46,7 +46,7 @@
                     <Label text="Track and manage all emergency requests" styleClass="page-subtitle"/>
                 </VBox>
                 <Region maxWidth="1.7976931348623157E308"/>
-                <TextField promptText="🔍 Search requests..." styleClass="search-field" prefWidth="250" prefHeight="36"/>
+                <TextField fx:id="searchField" promptText="🔍 Search requests..." styleClass="search-field" prefWidth="250" prefHeight="36" onKeyReleased="#onSearch"/>
             </HBox>
             <Separator/>
 
@@ -87,7 +87,14 @@
 
                     <VBox styleClass="card" spacing="10">
                         <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
-                        <Label text="All Emergency Requests" styleClass="card-title"/>
+                        <HBox alignment="CENTER_LEFT" spacing="10">
+                            <Label text="All Emergency Requests" styleClass="card-title" HBox.hgrow="ALWAYS"/>
+                            <Region maxWidth="1.7976931348623157E308"/>
+                            <Button text="➕ Add" styleClass="btn-add" onAction="#onAddClick"/>
+                            <Button text="✏️ Edit" styleClass="btn-edit" onAction="#onEditClick"/>
+                            <Button text="🗑 Delete" styleClass="btn-delete" onAction="#onDeleteClick"/>
+                            <Button text="🔄 Refresh" styleClass="btn-refresh" onAction="#onRefreshClick"/>
+                        </HBox>
                         <TableView fx:id="emergencyTable" prefHeight="450" styleClass="styled-table">
                             <columns>
                                 <TableColumn fx:id="colId" text="ID" prefWidth="70"/>

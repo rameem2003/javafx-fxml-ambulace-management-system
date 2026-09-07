@@ -1,8 +1,11 @@
 package com.ambulance.controller;
 
-import com.ambulance.App;
+import com.ambulance.dao.AmbulanceDAO;
+import com.ambulance.dao.DriverDAO;
+import com.ambulance.dao.EmergencyRequestDAO;
 import com.ambulance.model.Ambulance;
 import com.ambulance.model.EmergencyRequest;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -44,11 +47,15 @@ public class DashboardController {
     @FXML private Label hospitalsConnected;
     @FXML private Label pageTitle;
 
+    private final AmbulanceDAO ambulanceDAO = new AmbulanceDAO();
+    private final EmergencyRequestDAO emergencyDAO = new EmergencyRequestDAO();
+    private final DriverDAO driverDAO = new DriverDAO();
+
     @FXML
     public void initialize() {
         setupAmbulanceTable();
         setupEmergencyTable();
-        loadStaticData();
+        loadData();
     }
 
     private void setupAmbulanceTable() {
@@ -69,32 +76,44 @@ public class DashboardController {
         colRequestTime.setCellValueFactory(new PropertyValueFactory<>("time"));
     }
 
-    private void loadStaticData() {
-        ObservableList<Ambulance> ambulances = FXCollections.observableArrayList(
-            new Ambulance("AMB-001", "ABC-1234", "Basic Life Support", "Available", "Central Station", "John Smith"),
-            new Ambulance("AMB-002", "ABC-5678", "Advanced Life Support", "On Mission", "Downtown", "Mike Johnson"),
-            new Ambulance("AMB-003", "ABC-9012", "Basic Life Support", "Available", "North Hub", "Sarah Williams"),
-            new Ambulance("AMB-004", "ABC-3456", "Patient Transport", "On Mission", "East District", "David Brown"),
-            new Ambulance("AMB-005", "ABC-7890", "Advanced Life Support", "Available", "South Station", "Emily Davis"),
-            new Ambulance("AMB-006", "DEF-1234", "Basic Life Support", "Maintenance", "Central Station", "Robert Wilson"),
-            new Ambulance("AMB-007", "DEF-5678", "ICU Ambulance", "On Mission", "West Side", "Lisa Anderson"),
-            new Ambulance("AMB-008", "DEF-9012", "Basic Life Support", "Maintenance", "North Hub", "James Taylor"),
-            new Ambulance("AMB-009", "DEF-3456", "Advanced Life Support", "Available", "Downtown", "Maria Garcia"),
-            new Ambulance("AMB-010", "DEF-7890", "Patient Transport", "On Mission", "Central Station", "Chris Martinez")
-        );
-        ambulanceTable.setItems(ambulances);
+    private void loadData() {
+        try {
+            ObservableList<Ambulance> ambulances = FXCollections.observableArrayList(ambulanceDAO.findAll());
+            ambulanceTable.setItems(ambulances);
 
-        ObservableList<EmergencyRequest> requests = FXCollections.observableArrayList(
-            new EmergencyRequest("REQ-001", "Alice Johnson", "45 Oak Street", "In Progress", "HIGH", "12:30 PM", "AMB-002"),
-            new EmergencyRequest("REQ-002", "Bob Williams", "78 Pine Avenue", "Dispatched", "CRITICAL", "12:15 PM", "AMB-007"),
-            new EmergencyRequest("REQ-003", "Carol Davis", "12 Maple Drive", "Completed", "MEDIUM", "11:45 AM", "AMB-001"),
-            new EmergencyRequest("REQ-004", "Daniel Brown", "90 Elm Street", "Pending", "LOW", "11:30 AM", "Unassigned"),
-            new EmergencyRequest("REQ-005", "Eva Martinez", "23 Cedar Lane", "In Progress", "HIGH", "11:15 AM", "AMB-005"),
-            new EmergencyRequest("REQ-006", "Frank Wilson", "56 Birch Road", "Completed", "MEDIUM", "10:45 AM", "AMB-003"),
-            new EmergencyRequest("REQ-007", "Grace Lee", "34 Walnut Court", "Dispatched", "CRITICAL", "10:30 AM", "AMB-009"),
-            new EmergencyRequest("REQ-008", "Henry Taylor", "67 Spruce Way", "Pending", "LOW", "10:15 AM", "Unassigned")
-        );
-        emergencyTable.setItems(requests);
+            ObservableList<EmergencyRequest> requests = FXCollections.observableArrayList(emergencyDAO.findAll());
+            emergencyTable.setItems(requests);
+
+            updateStats(ambulances, requests);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateStats(ObservableList<Ambulance> ambulances, ObservableList<EmergencyRequest> requests) {
+        long total = ambulances.size();
+        long available = ambulances.stream().filter(a -> "Available".equalsIgnoreCase(a.getStatus())).count();
+        long onMission = ambulances.stream().filter(a -> "On Mission".equalsIgnoreCase(a.getStatus())).count();
+        long maintenance = ambulances.stream().filter(a -> "Maintenance".equalsIgnoreCase(a.getStatus())).count();
+
+        long totalReq = requests.size();
+        long pending = requests.stream().filter(r -> "Pending".equalsIgnoreCase(r.getStatus())).count();
+
+        long activeDrv = 0;
+        try {
+            activeDrv = driverDAO.findAll().stream()
+                    .filter(d -> "On Duty".equalsIgnoreCase(d.getStatus())).count();
+        } catch (RuntimeException ignored) {
+        }
+
+        if (totalAmbulances != null) totalAmbulances.setText(String.valueOf(total));
+        if (availableAmbulances != null) availableAmbulances.setText(String.valueOf(available));
+        if (onMissionAmbulances != null) onMissionAmbulances.setText(String.valueOf(onMission));
+        if (maintenanceAmbulances != null) maintenanceAmbulances.setText(String.valueOf(maintenance));
+        if (totalRequests != null) totalRequests.setText(String.valueOf(totalReq));
+        if (pendingRequests != null) pendingRequests.setText(String.valueOf(pending));
+        if (activeDrivers != null) activeDrivers.setText(String.valueOf(activeDrv));
+        if (hospitalsConnected != null) hospitalsConnected.setText("12");
     }
 
     private void navigateTo(String fxmlFile, String title) {
@@ -133,11 +152,9 @@ public class DashboardController {
 
     @FXML
     private void onReportsClick() {
-        // Reports view placeholder
     }
 
     @FXML
     private void onSettingsClick() {
-        // Settings view placeholder
     }
 }
